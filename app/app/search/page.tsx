@@ -34,9 +34,9 @@ export default function SearchPage() {
       {error && <p style={{color:'crimson'}}>Error: {error}</p>}
       <ul>
         {results.map((r)=> (
-          <li key={r.id} style={{marginBottom:8}}>
-            <strong>{r.title}</strong> — ${'{'}r.price_per_hour{'}'} — {r.location_address}
-          </li>
+<li key={r.id} style={{marginBottom:8}}>
+  <strong>{r.title}</strong> — ${r.price_per_hour} — {r.location_address}
+</li>
         ))}
       </ul>
     </main>
