@@ -6,30 +6,34 @@ export default function MisReservas() {
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    async function load() {
-      try {
+    (async ()=>{
+      try{
         const res = await fetch('/api/reservations/mine')
         const data = await res.json()
-        if (!res.ok) throw new Error(data?.error || 'Error')
+        if(!res.ok) throw new Error(data?.error || 'Error')
         setItems(data)
-      } catch (e:any) {
-        setError(e.message)
-      }
-    }
-    load()
+      }catch(e:any){ setError(e.message) }
+    })()
   }, [])
 
   return (
-    <main style={{padding:24}}>
-      <h2>Mis reservas</h2>
-      {error && <p style={{color:'crimson'}}>Error: {error}</p>}
-      <ul>
-        {items.map((it)=> (
-          <li key={it.id}>
-            {it.spaces?.title} — {new Date(it.starts_at).toLocaleString()} → {new Date(it.ends_at).toLocaleString()} — {it.status}
-          </li>
+    <section className="panel card">
+      <h2 style={{marginTop:0}}>Mis reservas</h2>
+      {error && <p style={{color:'var(--danger)'}}>Error: {error}</p>}
+      <div className="list">
+        {items.map((it)=>(
+          <div key={it.id} className="list-item">
+            <div>
+              <div style={{fontWeight:700}}>{it.spaces?.title}</div>
+              <div style={{color:'var(--muted)'}}>
+                {new Date(it.starts_at).toLocaleString()} → {new Date(it.ends_at).toLocaleString()}
+              </div>
+            </div>
+            <span>{it.status}</span>
+          </div>
         ))}
-      </ul>
-    </main>
+        {items.length===0 && !error && <p style={{color:'var(--muted)'}}>No tenés reservas todavía.</p>}
+      </div>
+    </section>
   )
 }
